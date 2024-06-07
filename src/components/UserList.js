@@ -41,19 +41,17 @@ const UserList = ({ searchQuery }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
+    const fetchUsers = () => {
+      axios.get(`https://randomuser.me/api/?results=12&page=${currentPage}`)
+        .then(response => {
+          setUsers(response.data.results);
+        })
+        .catch(error => {
+          console.error('Error fetching users:', error);
+        });
+    };
     fetchUsers();
-  }, [currentPage]); // Fetch users whenever currentPage changes
-
-  const fetchUsers = () => {
-    axios.get(`https://randomuser.me/api/?results=12&page=${currentPage}`)
-      .then(response => {
-        setUsers(response.data.results);
-      })
-      .catch(error => {
-        console.error('Error fetching users:', error);
-      });
-  };
-
+  }, [currentPage]);
   const handleNextPage = () => {
     setCurrentPage(prevPage => prevPage + 1);
   };
